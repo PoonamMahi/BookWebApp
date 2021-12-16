@@ -1,0 +1,11 @@
+a small book tracking application. This application is meant for someone to catalogue books that they have read.
+
+The point of the application is to Create the proper Model Structure to create the database. You will also need to scaffold the pages and add the drop-down lists as we learned in class.
+
+Create a solution and an ASP.Net Core WEb Application
+Create the database models as written in the provided ERD diagram
+Create the data entry pages by scaffolding (Remember to use separate folders)
+Ensure that there are migrations created
+Apply Compression to the pages.
+Apply caching to the page
+Apply the Book schema on the book details page. https://schema.org/Book
