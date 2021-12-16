@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
+using Microsoft.AspNetCore.Http;
 
 namespace BookWebApp
 {
@@ -33,6 +34,7 @@ namespace BookWebApp
             {
                 options.Providers.Add<GzipCompressionProvider>();
             });
+            services.AddResponseCaching();
             services.AddControllersWithViews();
             services.AddDbContext<BookContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
@@ -56,6 +58,23 @@ namespace BookWebApp
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors("*");
+            app.UseResponseCaching();
+            // using Microsoft.AspNetCore.Http;
+
+            app.Use(async (context, next) =>
+            {
+                context.Response.GetTypedHeaders().CacheControl =
+                    new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+                    {
+                        Public = true,
+                        MaxAge = TimeSpan.FromSeconds(10)
+                    };
+                context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.Vary] =
+                    new string[] { "Accept-Encoding" };
+
+                await next();
+            });
 
             app.UseAuthorization();
 
@@ -63,7 +82,7 @@ namespace BookWebApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Books}/{action=Index}/{id?}");
             });
         }
     }
