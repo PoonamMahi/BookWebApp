@@ -15,7 +15,9 @@ namespace BookWebApp.Data
 
         public DbSet<Book> Books { get; set; }
 
-        public DbSet<BookWebApp.Models.Category> Category { get; set; }
-        
+        public DbSet<Category> Category { get; set; }
+        public DbSet<CategoryType> categoryTypes { get; set; }
+
     }
+
 }
